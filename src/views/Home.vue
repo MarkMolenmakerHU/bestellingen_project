@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <SearchField />
-    <NavigationItem path="/order/register" name="Bestelling Registreren" />
+    <NavigationItem path="/order/register/assembly" name="Bestelling Registreren" />
   </div>
 </template>
 

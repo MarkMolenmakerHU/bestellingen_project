@@ -14,18 +14,30 @@
 </template>
 
 <script>
+import {useStore} from "vuex";
+import {ref} from "vue";
+
 export default {
   name: "SearchField",
-  data() {
-    return {
-      searchQuery: "",
+  setup () {
+    const store = useStore();
+
+    // Search query
+    const searchQuery = ref("");
+
+    // Search function
+    const search = () => {
+      // If the search query is not empty
+      if (searchQuery.value !== "") {
+        // Set the search query in the store
+        store.dispatch("fetchSearchResults", searchQuery.value);
+      }
     };
-  },
-  methods: {
-    search() {
-      // Emit the search query to the parent component
-      this.$emit("search", this.searchQuery);
-    },
+
+    return {
+      searchQuery,
+      search
+    };
   }
 }
 </script>

@@ -3,7 +3,7 @@
     <OrderRegistrationProgress />
     <SearchField />
     <div class="product-list">
-      <ProductLine />
+      <ProductLine v-for="product in $store.state.search_results" v-bind:key="product.sku" :product="product"/>
     </div>
   </div>
 </template>
