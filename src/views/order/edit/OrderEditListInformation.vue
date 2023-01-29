@@ -1,5 +1,5 @@
 <template>
-  <div class="register-order">
+  <div class="register-order" v-if="$store.state.order">
     <OrderRegistrationProgress/>
     <form class="order-information" @submit.prevent>
       <span>Klant Gegevens</span>
@@ -16,7 +16,7 @@
       <span>Opmerkingen</span>
       <textarea v-model="$store.state.order_data.other_info" placeholder="Overig..." />
     </form>
-    <router-link class="button orange" to="/order/register/overview">Bestelling Afronden</router-link>
+    <router-link class="button orange" :to="'/order/' + this.$route.params.id + '/overview'">Aanpassen Afronden</router-link>
   </div>
 </template>
 
@@ -28,6 +28,16 @@ export default {
   name: 'OrderListInformation',
   components: {
     OrderRegistrationProgress
+  },
+  async created() {
+    await this.$store.dispatch("fetchOrder", this.$route.params.id);
+    this.$store.dispatch("setOrderData", this.$store.state.order);
+
+    // Format the date to yyyy-mm-dd
+    const formattedPickupDate = new Date(this.$store.state.order.pickup_date);
+    const formattedDeliveryDate = new Date(this.$store.state.order.delivery_date);
+    this.$store.state.order_data.pickup_date = formattedPickupDate.toISOString().split('T')[0];
+    this.$store.state.order_data.delivery_date = formattedDeliveryDate.toISOString().split('T')[0];
   }
 }
 </script>

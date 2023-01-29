@@ -1,7 +1,8 @@
 <template>
   <router-link :to="path" class="navigation-item">
+    <i class="fa-solid" :class="prefix_icon" style="color: var(--color-primary)"/>
     <span class="title">{{name}}</span>
-    <span class="icon">></span>
+    <i class="fa-solid fa-greater-than"/>
   </router-link>
 </template>
 
@@ -19,6 +20,11 @@ export default {
       type: String,
       required: true,
     },
+    // The icon of the navigation item
+    prefix_icon: {
+      type: String,
+      required: true,
+    }
   }
 }
 </script>
@@ -26,23 +32,24 @@ export default {
 <style scoped>
   .navigation-item {
     width: 90%;
-    margin: 1em auto;
+    margin: .5em auto;
     padding: 1em;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1em 1fr 1em;
     background-color: #fff;
     cursor: pointer;
     text-decoration: none;
     color: var(--color-text);
+    font-size: 1em;
+    text-align: left;
   }
   .navigation-item .title {
-    font-size: 1em;
+    margin: 0 1em;
   }
-  .navigation-item .icon {
-    font-weight: bold;
+  .navigation-item i {
+    font-size: 1.2em;
   }
 </style>

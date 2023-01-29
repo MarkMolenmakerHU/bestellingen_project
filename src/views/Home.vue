@@ -1,20 +1,45 @@
 <template>
   <div class="home">
-    <SearchField />
-    <NavigationItem path="/order/register/assembly" name="Bestelling Registreren" />
+    <div class="orders-wrapper" v-if="$store.state.orders.length > 0">
+      <span class="title">Vandaag</span>
+      <OrderOverview v-for="order in $store.state.orders" v-bind:key="order._id" :order="order"/>
+    </div>
+    <div class="orders-wrapper" v-else>
+      <span class="title">Geen Bestellingen Vandaag</span>
+    </div>
+    <NavigationItem path="/order/register/assembly" name="Bestelling Registreren" prefix_icon="fa-pencil" />
+    <NavigationItem path="/orders" name="Overzicht Bestellingen" prefix_icon="fa-cart-shopping" />
+    <NavigationItem path="/users" name="Account beheer" prefix_icon="fa-users" />
+    <div class="spacer"/>
+    <NavigationItem path="/login" name="Uitloggen" prefix_icon="fa-right-from-bracket" @click="logout()"/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import SearchField from "@/components/SearchField.vue";
 import NavigationItem from "@/components/NavigationItem.vue";
+import axios from "axios";
+import OrderOverview from "@/components/OrderOverview.vue";
 
 export default {
   name: 'Home',
   components: {
-    NavigationItem,
-    SearchField
+    OrderOverview,
+    NavigationItem
+  },
+  created() {
+    this.$store.dispatch("fetchOrdersToday");
+  },
+  methods: {
+    logout() {
+      axios.post("/api/auth/logoutAll", {
+        refreshToken: localStorage.getItem("refreshToken")
+      }).then(() => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("loggedInUserId");
+      });
+    }
   }
 }
 </script>
@@ -27,5 +52,19 @@ export default {
   display: block;
   justify-content: center;
   align-items: center;
+}
+.orders-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 1em 0;
+}
+.spacer {
+  height: 1em;
 }
 </style>

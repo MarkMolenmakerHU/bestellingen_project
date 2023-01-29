@@ -1,5 +1,5 @@
 <template>
-  <div class="register-order">
+  <div class="register-order" v-if="$store.state.order">
     <OrderRegistrationProgress />
     <SearchField />
     <div class="product-list list">
@@ -9,7 +9,7 @@
     <div class="order-list list" v-if="$store.state.search_results.length === 0">
       <OrderLine v-for="(product, index) in $store.state.order_list" v-bind:key="product.sku" :index="index"/>
     </div>
-    <router-link class="button orange" to="/order/register/information">Gegevens invullen</router-link>
+    <router-link class="button orange" :to="'/order/' + this.$route.params.id + '/information'">Gegevens aanpassen</router-link>
   </div>
 </template>
 
@@ -33,6 +33,10 @@ export default {
       this.$store.commit("clearSearchResults");
 
     }
+  },
+  async created() {
+    await this.$store.dispatch("fetchOrder", this.$route.params.id);
+    this.$store.dispatch("setOrderList", this.$store.state.order.product_list);
   }
 }
 </script>

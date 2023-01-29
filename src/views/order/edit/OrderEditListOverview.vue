@@ -27,7 +27,7 @@
         <OrderLine v-for="(product, index) in $store.state.order_list" v-bind:key="product.sku" :index="index" noedit/>
       </div>
   </div>
-    <button class="button orange" @click="placeOrder">Bestelling Afronden</button>
+    <button class="button orange" @click="editOrder">Bestelling Aanpassen</button>
   </div>
 </template>
 
@@ -52,9 +52,10 @@ export default {
       let year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
-    async placeOrder() {
-      const result = await axios.post("/api/orders/place", {
-        placed_by: localStorage.getItem("loggedInUserId"), // UserId
+    async editOrder() {
+      const result = await axios.post("/api/orders/edit", {
+        order_id: this.$route.params.id,
+        edited_by: localStorage.getItem("loggedInUserId"), // UserId
         firstname: this.$store.state.order_data.firstname,
         lastname: this.$store.state.order_data.lastname,
         phonenumber: this.$store.state.order_data.phonenumber,
