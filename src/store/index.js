@@ -69,6 +69,7 @@ export default createStore({
         });
         const data = await response.data;
         commit('setUser', data);
+        return data;
     },
     async fetchOrder({ commit }, orderId) {
         const response = await axios.get(`/api/orders/${orderId}`, {
@@ -76,6 +77,7 @@ export default createStore({
         });
         const data = await response.data;
         commit('setOrder', data);
+        return data;
     },
       async fetchAllOrders({ commit }) {
           const response = await axios.get('/api/orders', {

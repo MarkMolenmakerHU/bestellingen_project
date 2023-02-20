@@ -1,22 +1,40 @@
 <template>
-  <div class="user-profile" v-if="this.$store.state.user">
+  <div v-if="!loading">
+  <div class="user-profile" v-if="this.user">
     <div class="image-border">
-      <span class="image-icon">{{this.$store.state.user.firstname[0]}}</span>
+      <span class="image-icon">{{this.user.firstname[0]}}</span>
     </div>
     <div class="user-details">
-      <input type="text" name="username" id="username" :value="this.$store.state.user.username" disabled>
-      <input type="text" name="firstname" id="firstname" :value="this.$store.state.user.firstname" disabled>
-      <input type="text" name="lastname" id="lastname" :value="this.$store.state.user.lastname" disabled>
-      <input type="text" name="role" id="role" :value="this.$store.state.user.role" disabled>
+      <input type="text" name="username" id="username" :value="this.user.username" disabled>
+      <input type="text" name="firstname" id="firstname" :value="this.user.firstname" disabled>
+      <input type="text" name="lastname" id="lastname" :value="this.user.lastname" disabled>
+      <input type="text" name="role" id="role" :value="this.user.role" disabled>
     </div>
   </div>
+  </div>
+  <LoadingSkeleton v-else />
 </template>
 
 <script>
+import LoadingSkeleton from "../../components/LoadingSkeleton.vue";
+
 export default {
   name: "User",
+  components: {LoadingSkeleton},
+  data() {
+    return {
+      loading: false,
+      user: null
+    }
+  },
   beforeMount() {
-    this.$store.dispatch("fetchUser", this.$route.params.id);
+    this.loading = true;
+    this.$store.dispatch("fetchUser", this.$route.params.id).then(
+        (user) => {
+          this.user = user;
+          this.loading = false;
+        }
+    );
   },
 }
 </script>

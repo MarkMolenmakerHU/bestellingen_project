@@ -1,15 +1,18 @@
 <template>
   <div class="home">
-    <div class="orders-wrapper" v-if="$store.state.orders.length > 0">
-      <span class="title">Vandaag</span>
-      <OrderOverview v-for="order in $store.state.orders" v-bind:key="order._id" :order="order"/>
+    <div v-if="!loading">
+      <div class="orders-wrapper" v-if="$store.state.orders.length > 0">
+        <span class="title">Vandaag</span>
+        <OrderOverview v-for="order in $store.state.orders" v-bind:key="order._id" :order="order"/>
+      </div>
+      <div class="orders-wrapper" v-else>
+        <span class="title">Geen Bestellingen Vandaag</span>
+      </div>
     </div>
-    <div class="orders-wrapper" v-else>
-      <span class="title">Geen Bestellingen Vandaag</span>
-    </div>
-    <NavigationItem path="/order/register/assembly" name="Bestelling Registreren" prefix_icon="fa-pencil" />
-    <NavigationItem path="/orders" name="Overzicht Bestellingen" prefix_icon="fa-cart-shopping" />
-    <NavigationItem path="/users" name="Account beheer" prefix_icon="fa-users" />
+    <LoadingSkeleton v-else />
+    <NavigationItem path="/order/register/assembly" name="Bestelling Registreren" prefix_icon="fa-pencil"/>
+    <NavigationItem path="/orders" name="Overzicht Bestellingen" prefix_icon="fa-cart-shopping"/>
+    <NavigationItem path="/users" name="Account beheer" prefix_icon="fa-users"/>
     <div class="spacer"/>
     <NavigationItem path="/login" name="Uitloggen" prefix_icon="fa-right-from-bracket" @click="logout()"/>
   </div>
@@ -20,15 +23,27 @@
 import NavigationItem from "@/components/NavigationItem.vue";
 import axios from "axios";
 import OrderOverview from "@/components/OrderOverview.vue";
+import LoadingSkeleton from "../components/LoadingSkeleton.vue";
 
 export default {
   name: 'Home',
   components: {
+    LoadingSkeleton,
     OrderOverview,
     NavigationItem
   },
+  data() {
+    return {
+      loading: false
+    }
+  },
   created() {
-    this.$store.dispatch("fetchOrdersToday");
+    this.loading = true;
+    this.$store.dispatch("fetchOrdersToday").then(
+        () => {
+          this.loading = false;
+        }
+    );
   },
   methods: {
     logout() {
