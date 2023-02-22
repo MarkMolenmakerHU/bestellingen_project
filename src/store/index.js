@@ -92,6 +92,7 @@ export default createStore({
           });
           const data = await response.data;
           commit('setOrders', data);
+          return data;
       },
       async setOrderList({ commit }, product_list) {
         commit('setOrderList', product_list);
