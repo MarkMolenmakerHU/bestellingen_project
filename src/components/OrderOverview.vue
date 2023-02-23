@@ -48,6 +48,7 @@ export default {
     async completeOrder() {
       await axios.post("/api/orders/state", {
         order_id: this.$route.params.id,
+        edited_by: localStorage.getItem("loggedInUserId"), // UserId
         state: "completed",
       }, {
         headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}

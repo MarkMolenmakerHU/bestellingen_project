@@ -1,34 +1,45 @@
 <template>
-  <div>
-    <h1>Login</h1>
-    <form @submit.prevent="login">
-      <input v-model="username" placeholder="gebruikersnaam" />
-      <br />
-      <br />
-      <input v-model="password" placeholder="wachtwoord" type="password" />
-      <br />
-      <br />
-      <button type="submit">Login</button>
-    </form>
-  </div>
+  <h1>Inloggen</h1>
+  <DynamicForm :schema="loginSchema" @submit="login" />
 </template>
 <script>
 import axios from "axios";
 import Swal from "sweetalert2";
+import * as Yup from 'yup';
+import DynamicForm from "../components/form/DynamicForm.vue";
 
 export default {
+  name: "Login",
+  components: { DynamicForm },
   data: () => {
+    const loginSchema = {
+      fields: [{
+        label: "Gebruikersnaam",
+        name: "username",
+        as: "input",
+        placeholder: "Gebruikersnaam",
+        rules: Yup.string().required("Vul een gebruikersnaam in!")
+      },
+      {
+        label: "Wachtwoord",
+        name: "password",
+        as: "input",
+        type: "password",
+        placeholder: "Wachtwoord",
+        rules: Yup.string().required("Vul een wachtwoord in!")
+      }],
+      button: "Inloggen"
+    }
     return {
-      username: "",
-      password: "",
+      loginSchema
     };
   },
   methods: {
-    async login() {
+    async login(values) {
       try {
         const response = await axios.post("/api/auth/login", {
-          username: this.username,
-          password: this.password,
+          username: values.username,
+          password: values.password,
         });
         const { id, accessToken, refreshToken } = await response.data;
         localStorage.setItem("loggedInUserId", id);

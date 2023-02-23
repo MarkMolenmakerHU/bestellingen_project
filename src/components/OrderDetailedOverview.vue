@@ -38,16 +38,32 @@
       <router-link class="action-btn" :to="'/order/' + order._id + '/assembly'"><i class="fa-solid fa-pencil edit"/>AANPASSEN</router-link>
       <button class="action-btn" @click="completeOrder"><i class="fa-solid fa-check accept"/>VOLTOOIEN</button>
     </div>
+
+    <span class="title divider">Activiteiten</span>
+
+    <div class="information-container" v-for="activity in order.activity_log" v-bind:key="activity.date">
+      <ActivityUsername :id="activity.user" />
+      <div class="sub-container column">
+        <div class="data-container wide">
+          <span class="subtitle">Datum:</span>
+          <span class="subtitle-data">{{formatted_datetime(activity.date)}}</span>
+        </div>
+        <div class="data-container wide" v-for="action in activity.actions" v-bind:key="action">
+          <span class="subtitle">{{action}}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import ProductLine from "@/components/ProductLine.vue";
 import axios from "axios";
+import ActivityUsername from "@/components/async/ActivityUsername.vue";
 
 export default {
   name: "OrderOverview",
-  components: {ProductLine},
+  components: {ActivityUsername, ProductLine},
   props: {
     order: {
       type: Object,
@@ -63,9 +79,20 @@ export default {
       let year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
+    // Refactor the string to a dd/mm/yyyy - hh:mm format
+    formatted_datetime(string) {
+      let date = new Date(string);
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      return `${day}/${month}/${year} - ${('0'  + hours).slice(-2)}:${('0'  + minutes).slice(-2)}`;
+    },
     async completeOrder() {
       await axios.post("/api/orders/state", {
         order_id: this.$route.params.id,
+        edited_by: localStorage.getItem("loggedInUserId"), // UserId
         state: "completed",
       }, {
         headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
@@ -84,7 +111,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
 }
 .information-container {
   padding: 1em;
@@ -169,5 +195,15 @@ export default {
 }
 .accept {
   color: #44d200;
+}
+.column {
+  flex-direction: column;
+}
+.divider {
+  margin-top: 1em;
+  margin-bottom: .5em;
+}
+.wide {
+  width: 100%;
 }
 </style>

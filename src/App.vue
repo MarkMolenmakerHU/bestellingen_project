@@ -9,6 +9,8 @@
 <style>
 :root {
   --color-primary: #f79300;
+  --color-primary-light: #ff9700;
+  --color-primary-dark: #ea8c00;
   --color-secondary: #696969;
   --color-background: #f3efeb;
   --color-text: #000;
