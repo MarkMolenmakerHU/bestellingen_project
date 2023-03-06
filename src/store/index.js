@@ -79,8 +79,8 @@ export default createStore({
         commit('setOrder', data);
         return data;
     },
-      async fetchAllOrders({ commit }) {
-          const response = await axios.get('/api/orders', {
+      async fetchAllOrders({ commit }, { sort }) {
+          const response = await axios.get('/api/orders?sort=' + sort, {
               headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
           });
           const data = await response.data;
