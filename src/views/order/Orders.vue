@@ -38,7 +38,12 @@ export default {
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
       const state = order.state === 'pending' ? 'In behandeling' : 'Afgerond';
-      return `${order.firstname !== undefined ? order.firstname.toUpperCase()[0] : ''}. ${order.lastname} - ${day}/${month}/${year} - ${state}`;
+
+      let name = 'Onbekende Klant'
+      if (order.firstname !== undefined && order.lastname !== undefined)
+        name = order.firstname.toUpperCase()[0] + '. ' + order.lastname;
+
+      return `${name} - ${day}/${month}/${year} - ${state}`;
     },
     loadOrders() {
       this.$store.dispatch("fetchAllOrders", {sort: this.sorting_method});
