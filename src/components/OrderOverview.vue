@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="information-container">
-      <span class="title">{{order.firstname}} {{order.lastname}}</span>
+      <span class="title">{{formatted_name(order.firstname, order.lastname)}}</span>
       <div class="sub-container">
         <div class="data-container">
           <span class="subtitle">Datum:</span>
@@ -37,6 +37,12 @@ export default {
     }
   },
   methods: {
+    formatted_name(firstname, lastname) {
+      let name = 'Onbekende Klant'
+      if (firstname !== undefined && lastname !== undefined)
+        name = firstname + ' ' + lastname;
+      return name;
+    },
     // Refactor the string to a dd/mm/yyyy format
     formatted_date(string) {
       let date = new Date(string);
