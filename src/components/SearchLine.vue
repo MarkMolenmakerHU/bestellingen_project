@@ -1,6 +1,6 @@
 <template>
   <div class="product-line">
-    <img class="product-img" :src="product.images[0].effectiveUrl" alt="img">
+    <product-image class="product-img" :image="product.images[0].effectiveUrl" />
     <div class="product-information">
       <span class="product-title">{{product.productName}}</span>
       <span class="product-sku">{{product.sku}}</span>
@@ -10,8 +10,11 @@
 </template>
 
 <script>
+import ProductImage from "@/components/product/ProductImage.vue";
+
 export default {
   name: "SearchLine",
+  components: {ProductImage},
   props: {
     product: {
       type: Object,

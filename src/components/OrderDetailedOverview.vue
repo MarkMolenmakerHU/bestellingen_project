@@ -36,6 +36,7 @@
     </div>
     <div class="actions-container" v-if="order.state !== 'completed'">
       <router-link class="action-btn" :to="'/order/' + order._id + '/assembly'"><i class="fa-solid fa-pencil edit"/>AANPASSEN</router-link>
+      <button class="action-btn" @click="shareOrder"><i class="fa-solid fa-check share"/>DELEN</button>
       <button class="action-btn" @click="completeOrder"><i class="fa-solid fa-check accept"/>VOLTOOIEN</button>
     </div>
 
@@ -105,6 +106,10 @@ export default {
       });
 
       this.$router.push('/');
+    },
+    shareOrder() {
+      const message = "Bestelling%20-%20Bob%20Blokhout%0ADatum%3A%2010%2F10%2F2000%0ATelefoon%3A%2006-12345678%0ALevering%3A%2005%2F10%2F2000%0AOpmerking%3A%20Alles%20bewaren!"
+      window.open(`whatsapp://send?text=${message}`)
     }
   }
 }

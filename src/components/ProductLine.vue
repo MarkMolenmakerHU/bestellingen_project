@@ -1,6 +1,6 @@
 <template>
   <div class="product-line">
-    <img class="product-img" :src="product.img" alt="img">
+    <product-image class="product-img" :image="product.img" />
     <div class="product-information">
       <span class="product-title">{{product.name}}</span>
       <span class="product-sku">{{product.sku}}</span>
@@ -13,8 +13,11 @@
 </template>
 
 <script>
+import ProductImage from "@/components/product/ProductImage.vue";
+
 export default {
   name: "ProductLine",
+  components: {ProductImage},
   props: {
     product: {
       type: Object,
