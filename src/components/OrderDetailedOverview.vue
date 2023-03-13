@@ -119,7 +119,7 @@ export default {
           "Opmerking: " + this.order.other_info + "\n\n" +
           "Producten:\n";
       this.order.product_list.forEach(product => {
-        message += product.name + " - " + product.sku + " - " + product.quantity + "\n";
+        message += product.name + " - " + product.quantity + "x " + product.quantity_type + "\n";
       });
       const url_encoded = encodeURIComponent(message);
       // const message = "Bestelling%20-%20Bob%20Blokhout%0ADatum%3A%2010%2F10%2F2000%0ATelefoon%3A%2006-12345678%0ALevering%3A%2005%2F10%2F2000%0AOpmerking%3A%20Alles%20bewaren!"
