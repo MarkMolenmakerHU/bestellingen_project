@@ -188,18 +188,15 @@ export default {
 
       // Generate all the barcodes
       for (let i=0; i < imgs.length; i++) {
-        console.log('generate barcode')
         const barcode_blob = await barcode(imgs[i].alt);
         const barcode_element = new Image();
         barcode_element.onload = () => {
           ctx.drawImage(barcode_element, LINE_WIDTH - barcode_element.width - LINE_PADDING, (i * LINE_HEIGHT) + LINE_PADDING, barcode_element.width, IMG_SIZE);
-          console.log('drewn barcode')
         }
         barcode_element.src = URL.createObjectURL(barcode_blob);
       }
 
       document.querySelector('.image-container').appendChild(canvas);
-      console.log('done')
     }
   }
 }
