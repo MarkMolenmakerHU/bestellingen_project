@@ -20,8 +20,6 @@
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  overflow: hidden;
 }
 
 .header {
@@ -61,7 +59,7 @@ html, body {
   background-color: var(--color-background);
 
   width: 100%;
-  height: 100%;
+  height: 100vh;
 }
 
 .button {

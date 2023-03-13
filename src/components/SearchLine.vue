@@ -1,6 +1,6 @@
 <template>
   <div class="product-line">
-    <product-image class="product-img" :image="product.images[0].effectiveUrl" />
+    <product-image class="product-img" :image="product.images.length > 0 ? product.images[0].effectiveUrl : ''" />
     <div class="product-information">
       <span class="product-title">{{product.productName}}</span>
       <span class="product-sku">{{product.sku}}</span>
@@ -25,7 +25,7 @@ export default {
     addProductToOrderList() {
       const added_product = {
         name: this.product.productName,
-        img: this.product.images[0].effectiveUrl,
+        img: this.product.images.length > 0 ? this.product.images[0].effectiveUrl : '',
         sku: this.product.sku,
         quantity: 1,
         quantity_type: 'stuks'

@@ -1,6 +1,6 @@
 <template>
   <div class="product-line">
-    <product-image class="product-img" :image="product.img" />
+    <product-image class="product-img" :image="product.img" :alt="product.sku"/>
     <div class="product-information">
       <span class="product-title">{{product.name}}</span>
       <span class="product-sku">{{product.sku}}</span>

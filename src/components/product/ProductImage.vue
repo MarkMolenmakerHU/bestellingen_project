@@ -1,5 +1,5 @@
 <template>
-  <img class="product-image" :src="this.image" alt="img" @click="handleClick">
+  <img class="product-image" :src="this.image" :alt="this.alt" @click="handleClick">
 </template>
 
 <script>
@@ -11,6 +11,10 @@ export default {
     image: {
       type: String,
       required: true
+    },
+    alt: {
+      type: String,
+      default: "product-image"
     }
   },
   data() {
@@ -52,7 +56,7 @@ export default {
       myHeaders.append("Accept", "image/png");
       myHeaders.append("Apikey", "28e63794-ef8a-4616-80bb-26fdd3709a19");
 
-      var raw = JSON.stringify(5760466739924);
+      var raw = JSON.stringify(this.alt);
 
       var requestOptions = {
         method: 'POST',
