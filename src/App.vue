@@ -3,7 +3,7 @@
     <router-link to="/"><i class="fa-solid fa-house"/></router-link>
   </div>
   <router-view class="view"/>
-  <div class="footer"></div>
+  <div class="footer">Version 21/03/2023</div>
 </template>
 
 <style>
@@ -42,6 +42,10 @@ html, body {
   height: 5vh;
   position: fixed;
   bottom: 0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: #fff;
   background-color: var(--color-primary);
 }
 
