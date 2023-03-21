@@ -1,6 +1,8 @@
 <template>
+  <div>
   <h1>Nieuwe Gebruiker Aanmaken</h1>
   <CreateAccountForm :schema="createAccountSchema" @submit="addUser"/>
+  </div>
 </template>
 
 <script>
@@ -50,6 +52,16 @@ export default {
           type: "password",
           placeholder: "Herhaal Wachtwoord",
           rules: Yup.string().required("Vul een wachtwoord in!")
+        },
+        {
+          label: "Pincode",
+          name: "pin",
+          as: "input",
+          type: "password",
+          placeholder: "Pincode 4 cijfers",
+          rules: Yup.string().max(4, "Pincode moet 4 cijfers zijn!").concat(
+              Yup.string().matches(/^[0123456789]{4}$/, "Pincode moet 4 cijfers zijn!")).concat(
+              Yup.string().required("Vul een pincode in!"))
         }],
       button: "Gebruiker Aanmaken"
     }
@@ -82,6 +94,7 @@ export default {
         lastname: values.lastname,
         role: values.role,
         password: values.password,
+        pin: values.pin
       });
 
       this.$router.push(`/user/${result.data.id}`);

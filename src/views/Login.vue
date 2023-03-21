@@ -1,6 +1,8 @@
 <template>
-  <h1>Inloggen</h1>
-  <DynamicForm :schema="loginSchema" @submit="login" />
+  <div>
+    <h1>Inloggen</h1>
+    <DynamicForm :schema="loginSchema" @submit="login" />
+  </div>
 </template>
 <script>
 import axios from "axios";

@@ -1,5 +1,8 @@
 <template>
-  <img class="product-image" :src="this.image" :alt="this.alt" @click="handleClick">
+  <div class="product-image" @click="handleClick">
+    <i class="fa-solid fa-barcode"/>
+    <img :src="this.image" :alt="this.alt">
+  </div>
 </template>
 
 <script>
@@ -80,5 +83,13 @@ export default {
 <style scoped>
 .product-image {
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+img {
+  max-height: 3em;
+  width: auto;
 }
 </style>

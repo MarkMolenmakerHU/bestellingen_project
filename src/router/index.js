@@ -17,6 +17,14 @@ const routes = [
       isPublicContent: true
     }
   },
+  {
+    path: '/login/pin',
+    name: 'LoginPin',
+    component: () => import(/* webpackChunkName: "loginPin" */ '../views/LoginPin.vue'),
+    meta: {
+      isPublicContent: true
+    }
+  },
     // Users
   {
     path: '/users',
@@ -97,39 +105,56 @@ router.beforeEach(async (to, from, next) => {
       try {
         const response = await axios.get("/api/auth/validate", {
           headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
-        });
+        })
+        if (response.status !== 200) throw new Error("Invalid Access Token")
+        next();
+      } catch (error) {
+        console.log("Invalid Access Token, Checking Refresh Token")
 
-        // Check if token is still valid
-        if (response.status === 200) {
-          next();
-        }
-      }
-      catch (error) {
-        // If token is not valid, try refreshing it
         try {
-          const response = await axios.post("/api/auth/accessToken", {
-            refreshToken: localStorage.getItem("refreshToken")
-          });
-          const { id, accessToken, refreshToken } = await response.data;
-          localStorage.setItem("loggedInUserId", id);
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
-          next();
-
-        }
-        // Refreshing failed, login
-        catch (error) {
+          // Try validating the refresh token
+          const response = await axios.get("/api/auth/validate/refreshToken", {
+            headers: {Authorization: `Bearer ${localStorage.getItem("refreshToken")}`}
+          })
+          if (response.status !== 200) throw new Error("Invalid Refresh Token")
+          next({ path: "/login/pin" });
+        } catch (error) {
+          console.log("Invalid Refresh Token, Logging Out")
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("loggedInUserId");
           next({ path: "/login" });
         }
       }
+
+      // catch (error) {
+      //   // If token is not valid, try refreshing it
+      //   try {
+      //     const response = await axios.post("/api/auth/accessToken", {
+      //       refreshToken: localStorage.getItem("refreshToken")
+      //     });
+      //     const { id, accessToken, refreshToken } = await response.data;
+      //     localStorage.setItem("loggedInUserId", id);
+      //     localStorage.setItem("accessToken", accessToken);
+      //     localStorage.setItem("refreshToken", refreshToken);
+      //     next();
+      //
+      //   }
+      //   // Refreshing failed, login
+      //   catch (error) {
+      //     localStorage.removeItem("accessToken");
+      //     localStorage.removeItem("refreshToken");
+      //     localStorage.removeItem("loggedInUserId");
+      //     next({ path: "/login" });
+      //   }
+      // }
     }
   }
 
   // If a public page is accessed
-  else { next(); }
+  else {
+    next();
+  }
 })
 
 export default router
